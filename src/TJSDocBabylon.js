@@ -1,5 +1,8 @@
-import path    from 'path';
-import TJSDoc  from 'tjsdoc';
+import path             from 'path';
+import TJSDoc           from 'tjsdoc';
+
+import BabylonASTUtil   from './parser/BabylonASTUtil.js';
+import CodeParser       from './parser/CodeParser.js';
 
 /**
  * Provides an overridden version of TJSDoc with a default runtime and publisher assigned to `tjsdoc-babylon` &
@@ -16,6 +19,8 @@ export default class TJSDocBabylon extends TJSDoc
    /**
     * Depending on the value of `process.env.BABEL_ENV` selectively load either the local development runtime and
     * publisher or default to the published NPM modules.
+    *
+    * @param {TJSDocConfig}   config - TJSDoc config.
     */
    static generate(config)
    {
@@ -33,7 +38,6 @@ export default class TJSDocBabylon extends TJSDoc
 export function onPluginLoad(ev)
 {
    const eventbus = ev.eventbus;
-   const dirPath = path.resolve(__dirname);
 
    // Instances are being loaded into the plugin manager so auto log filtering needs an explicit filter.
    eventbus.trigger('log:add:filter', {
@@ -64,8 +68,8 @@ export function onPluginLoad(ev)
       },
 
       // Adds all local Babylon runtime parser plugins.
-      { name: 'tjsdoc-ast-util', instance: require(`${dirPath}/parser/BabylonASTUtil.js`) },
-      { name: 'tjsdoc-code-parser', instance: require(`${dirPath}/parser/CodeParser.js`) }
+      { name: 'tjsdoc-ast-util', instance: new BabylonASTUtil() },
+      { name: 'tjsdoc-code-parser', instance: new CodeParser() }
    ]);
 }
 

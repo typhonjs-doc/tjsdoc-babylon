@@ -1,52 +1,12 @@
 import babelGenerator from 'babel-generator';
 
 /**
- * Wires up BabylonASTUtil on the plugin eventbus and stores it in a local module scope variable.
- *
- * @param {PluginEvent} ev - The plugin event.
- *
- * @ignore
+ * Provides several utility methods and event bindings to manipulate Babylon AST.
  */
-export function onPluginLoad(ev)
+export default class BabylonASTUtil
 {
-   const eventbus = ev.eventbus;
-
-   eventbus.on('tjsdoc:ast:create:variable:declaration:new:expression', createVariableDeclarationAndNewExpressionNode);
-
-   eventbus.on('tjsdoc:ast:create:class:declaration', findClassDeclarationNode);
-
-   eventbus.on('tjsdoc:ast:find:class:declaration', findClassDeclarationNode);
-
-   eventbus.on('tjsdoc:ast:find:decorators', findDecorators);
-
-   eventbus.on('tjsdoc:ast:find:function:declaration', findFunctionDeclarationNode);
-
-   eventbus.on('tjsdoc:ast:find:import:style', findImportStyle);
-
-   eventbus.on('tjsdoc:ast:find:line:number:start', findLineNumberStart);
-
-   eventbus.on('tjsdoc:ast:find:parent:export', findParentExport);
-
-   eventbus.on('tjsdoc:ast:find:path:import:declaration', findPathInImportDeclaration);
-
-   eventbus.on('tjsdoc:ast:find:variable:declaration', findVariableDeclarationNode);
-
-   eventbus.on('tjsdoc:ast:find:variable:declaration:new:expression', findVariableDeclarationAndNewExpressionNode);
-
-   eventbus.on('tjsdoc:ast:flatten:member:expression', flattenMemberExpression);
-
-   eventbus.on('tjsdoc:ast:get:code:comment:and:first:line:from:node', getCodeCommentAndFirstLineFromNode);
-
-   eventbus.on('tjsdoc:ast:get:method:params:from:node', getMethodParamsFromNode);
-
-   eventbus.on('tjsdoc:ast:get:file:comment:and:first:line:from:node', getFileCommentAndFirstLineFromNode);
-
-   eventbus.on('tjsdoc:ast:node:sanitize', sanitize);
-
-   eventbus.on('tjsdoc:ast:node:sanitize:children', sanitizeChildren);
-
    /**
-    * create VariableDeclaration node which has NewExpression.
+    * Create VariableDeclaration node that has NewExpression.
     *
     * @param {string} name - variable name.
     * @param {string} className - class name.
@@ -54,7 +14,7 @@ export function onPluginLoad(ev)
     *
     * @returns {ASTNode} created node.
     */
-   function createVariableDeclarationAndNewExpressionNode(name, className, loc)
+   createVariableDeclarationAndNewExpressionNode(name, className, loc)
    {
       const node = {
          type: 'VariableDeclaration',
@@ -81,7 +41,7 @@ export function onPluginLoad(ev)
     *
     * @returns {ASTNode|null} found ast node.
     */
-   function findClassDeclarationNode(name, ast)
+   findClassDeclarationNode(name, ast)
    {
       if (!name) { return null; }
 
@@ -101,7 +61,7 @@ export function onPluginLoad(ev)
     *
     * @returns {ASTNode|null} found ast node.
     */
-   function findFunctionDeclarationNode(name, ast)
+   findFunctionDeclarationNode(name, ast)
    {
       if (!name) { return null; }
 
@@ -120,7 +80,7 @@ export function onPluginLoad(ev)
     *
     * @returns {Array<Decorator>|undefined}
     */
-   function findDecorators(node)
+   findDecorators(node)
    {
       if (!node.decorators) { return; }
 
@@ -159,7 +119,7 @@ export function onPluginLoad(ev)
     *
     * @returns {number|undefined}
     */
-   function findLineNumberStart(node)
+   findLineNumberStart(node)
    {
       let number;
 
@@ -176,7 +136,7 @@ export function onPluginLoad(ev)
     *
     * @returns {string|null}
     */
-   function findImportStyle(node, name)
+   findImportStyle(node, name)
    {
       let parent = node.parent;
 
@@ -209,7 +169,7 @@ export function onPluginLoad(ev)
     *
     * @returns {boolean}
     */
-   function findParentExport(node)
+   findParentExport(node)
    {
       let parent = node.parent;
 
@@ -241,16 +201,11 @@ export function onPluginLoad(ev)
     *
     * @returns {string|null} file path.
     */
-   function findPathInImportDeclaration(ast, name)
+   findPathInImportDeclaration(ast, name)
    {
       let path = null;
 
-      if (eventbus === null || typeof eventbus === 'undefined')
-      {
-         throw new ReferenceError('eventbus is currently not defined.');
-      }
-
-      eventbus.trigger('ast:walker:traverse', ast,
+      this._eventbus.trigger('ast:walker:traverse', ast,
       {
          enterNode: (node) =>
          {
@@ -279,7 +234,7 @@ export function onPluginLoad(ev)
     *
     * @returns {ASTNode|null} found ast node.
     */
-   function findVariableDeclarationAndNewExpressionNode(name, ast)
+   findVariableDeclarationAndNewExpressionNode(name, ast)
    {
       if (!name) { return null; }
 
@@ -303,7 +258,7 @@ export function onPluginLoad(ev)
     *
     * @returns {ASTNode|null} found ast node.
     */
-   function findVariableDeclarationNode(name, ast)
+   findVariableDeclarationNode(name, ast)
    {
       if (!name) { return null; }
 
@@ -323,7 +278,7 @@ export function onPluginLoad(ev)
     *
     * @returns {string} flatten property.
     */
-   function flattenMemberExpression(node)
+   flattenMemberExpression(node)
    {
       const results = [];
       let target = node;
@@ -364,7 +319,7 @@ export function onPluginLoad(ev)
     * @returns {{text: string, startLine: number, endLine: number }} The last comment & method signature w/
     *                                                                start & end line numbers.
     */
-   function getCodeCommentAndFirstLineFromNode(code, node, allComments = false)
+   getCodeCommentAndFirstLineFromNode(code, node, allComments = false)
    {
       if (typeof code !== 'string') { throw new TypeError(`'code' is not a 'string'.`); }
       if (typeof node !== 'object') { throw new TypeError(`'node' is not an 'object'.`); }
@@ -416,7 +371,7 @@ export function onPluginLoad(ev)
     * @returns {{text: string, startLine: number, endLine: number }} The last comment & method signature w/
     *                                                                start & end line numbers.
     */
-   function getFileCommentAndFirstLineFromNode(filePath, node, allComments = false)
+   getFileCommentAndFirstLineFromNode(filePath, node, allComments = false)
    {
       if (typeof filePath !== 'string') { throw new TypeError(`'filePath' is not a 'string'.`); }
       if (typeof node !== 'object') { throw new TypeError(`'node' is not an 'object'.`); }
@@ -430,7 +385,7 @@ export function onPluginLoad(ev)
          const startLine = comment.loc.start.line - 1;
          const endLine = node.loc.start.line;
 
-         const targetLines = eventbus.triggerSync('typhonjs:util:file:read:lines', filePath, startLine, endLine);
+         const targetLines = this._eventbus.triggerSync('typhonjs:util:file:read:lines', filePath, startLine, endLine);
 
          return { text: targetLines.join('\n'), startLine, endLine };
       }
@@ -439,7 +394,7 @@ export function onPluginLoad(ev)
          const endLine = node.loc.start.line;
          const startLine = endLine - 10;
 
-         const targetLines = eventbus.triggerSync('typhonjs:util:file:read:lines', filePath, startLine, endLine);
+         const targetLines = this._eventbus.triggerSync('typhonjs:util:file:read:lines', filePath, startLine, endLine);
 
          return { text: targetLines.join('\n'), startLine, endLine };
       }
@@ -452,7 +407,7 @@ export function onPluginLoad(ev)
     *
     * @returns {string[]} variable names.
     */
-   function getMethodParamsFromNode(node)
+   getMethodParamsFromNode(node)
    {
       let params;
 
@@ -517,11 +472,65 @@ export function onPluginLoad(ev)
    }
 
    /**
+    * Wires up BabylonASTUtil on the plugin eventbus and stores it in a local module scope variable.
+    *
+    * @param {PluginEvent} ev - The plugin event.
+    *
+    * @ignore
+    */
+   onPluginLoad(ev)
+   {
+      /**
+       * Stores the plugin eventbus proxy.
+       * @type {EventProxy}
+       */
+      this._eventbus = ev.eventbus;
+
+      this._eventbus.on('tjsdoc:ast:create:variable:declaration:new:expression',
+       this.createVariableDeclarationAndNewExpressionNode, this);
+
+      this._eventbus.on('tjsdoc:ast:create:class:declaration', this.findClassDeclarationNode, this);
+
+      this._eventbus.on('tjsdoc:ast:find:class:declaration', this.findClassDeclarationNode, this);
+
+      this._eventbus.on('tjsdoc:ast:find:decorators', this.findDecorators, this);
+
+      this._eventbus.on('tjsdoc:ast:find:function:declaration', this.findFunctionDeclarationNode, this);
+
+      this._eventbus.on('tjsdoc:ast:find:import:style', this.findImportStyle, this);
+
+      this._eventbus.on('tjsdoc:ast:find:line:number:start', this.findLineNumberStart, this);
+
+      this._eventbus.on('tjsdoc:ast:find:parent:export', this.findParentExport, this);
+
+      this._eventbus.on('tjsdoc:ast:find:path:import:declaration', this.findPathInImportDeclaration, this);
+
+      this._eventbus.on('tjsdoc:ast:find:variable:declaration', this.findVariableDeclarationNode, this);
+
+      this._eventbus.on('tjsdoc:ast:find:variable:declaration:new:expression',
+       this.findVariableDeclarationAndNewExpressionNode, this);
+
+      this._eventbus.on('tjsdoc:ast:flatten:member:expression', this.flattenMemberExpression, this);
+
+      this._eventbus.on('tjsdoc:ast:get:code:comment:and:first:line:from:node',
+       this.getCodeCommentAndFirstLineFromNode, this);
+
+      this._eventbus.on('tjsdoc:ast:get:method:params:from:node', this.getMethodParamsFromNode, this);
+
+      this._eventbus.on('tjsdoc:ast:get:file:comment:and:first:line:from:node',
+       this.getFileCommentAndFirstLineFromNode, this);
+
+      this._eventbus.on('tjsdoc:ast:node:sanitize', this.sanitize, this);
+
+      this._eventbus.on('tjsdoc:ast:node:sanitize:children', this.sanitizeChildren, this);
+   }
+
+   /**
     * sanitize node. change node type to `Identifier` and empty comment.
     *
     * @param {ASTNode} node - target node.
     */
-   function sanitize(node)
+   sanitize(node)
    {
       if (!node) { return; }
 
@@ -536,7 +545,7 @@ export function onPluginLoad(ev)
     *
     * @param {ASTNode} node - target node.
     */
-   function sanitizeChildren(node)
+   sanitizeChildren(node)
    {
       if (!node) { return; }
 

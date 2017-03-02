@@ -1,8 +1,6 @@
 import * as babylon  from 'babylon';
 import fs            from 'fs';
 
-import ParserError   from 'tjsdoc-runtime-common/src/parser/ParserError.js';
-
 /**
  * Provides a regexp to detect ES Modules.
  * @type {RegExp}
@@ -11,18 +9,28 @@ import ParserError   from 'tjsdoc-runtime-common/src/parser/ParserError.js';
 const s_ESM_REGEX = /(^\s*|[}\);\n]\s*)(import\s*(['"]|(\*\s+as\s+)?[^"'\(\)\n;]+\s*from\s*['"]|\{)|export\s+\*\s+from\s+["']|export\s* (\{|default|function|class|var|const|let|async\s+function))/;
 
 /**
- * Wires up the Babylon code parser on the plugin eventbus and stores it in a local module scope variable.
- *
- * @param {PluginEvent} ev - The plugin event.
- *
- * @ignore
+ * Provides the Babylon code parser plugin.
  */
-export function onPluginLoad(ev)
+export default class CodeParser
 {
-   const eventbus = ev.eventbus;
+   /**
+    * Wires up the Babylon code parser on the plugin eventbus and stores it in a local module scope variable.
+    *
+    * @param {PluginEvent} ev - The plugin event.
+    *
+    * @ignore
+    */
+   onPluginLoad(ev)
+   {
+      /**
+       * Stores the plugin eventbus proxy.
+       * @type {EventProxy}
+       */
+      this._eventbus = ev.eventbus;
 
-   eventbus.on('tjsdoc:parse:code', parseCode);
-   eventbus.on('tjsdoc:parse:file', parseFile);
+      this._eventbus.on('tjsdoc:parse:code', this.parseCode, this);
+      this._eventbus.on('tjsdoc:parse:file', this.parseFile, this);
+   }
 
    /**
     * Parse ECMAScript source code with babylon.
@@ -33,16 +41,13 @@ export function onPluginLoad(ev)
     *
     * @returns {object} Parsed AST
     */
-   function parseCode(code, filePath = void 0)
+   parseCode(code, filePath = void 0)
    {
       let ast;
 
       try
       {
-         if (eventbus !== null && typeof eventbus !== 'undefined')
-         {
-            code = eventbus.triggerSync('plugins:invoke:sync:event', 'onHandleCode', { code }, { filePath }).code;
-         }
+         code = this._eventbus.triggerSync('plugins:invoke:sync:event', 'onHandleCode', { code }, { filePath }).code;
 
          if (code.charAt(0) === '#') { code = code.replace(/^#!/, '//'); }
 
@@ -59,23 +64,19 @@ export function onPluginLoad(ev)
             return babylon.parse(code, parserOptions);
          };
 
-         if (eventbus !== null && typeof eventbus !== 'undefined')
-         {
-            parser = eventbus.triggerSync('plugins:invoke:sync:event', 'onHandleCodeParser', void 0,
-             { parser, parserOptions, filePath, code }).parser;
-         }
+         parser = this._eventbus.triggerSync('plugins:invoke:sync:event', 'onHandleCodeParser', void 0,
+          { parser, parserOptions, filePath, code }).parser;
 
          ast = parser(code);
 
-         if (eventbus !== null && typeof eventbus !== 'undefined')
-         {
-            ast = eventbus.triggerSync('plugins:invoke:sync:event', 'onHandleAST', { ast }, { filePath, code }).ast;
-         }
+         ast = this._eventbus.triggerSync('plugins:invoke:sync:event', 'onHandleAST', { ast },
+          { filePath, code }).ast;
       }
       catch (err)
       {
-         throw typeof err.pos === 'number' ?
-          new ParserError(err.loc.line, err.loc.column, err.message, err.pos, filePath) : err;
+         throw typeof err.pos === 'number' ? this._eventbus.triggerSync('tjsdoc:create:parser:error',
+          { line: err.loc.line, column: err.loc.column, message: err.message, position: err.pos, fileName: filePath }) :
+           err;
       }
 
       return ast;
@@ -88,8 +89,8 @@ export function onPluginLoad(ev)
     *
     * @returns {AST} AST of source code.
     */
-   function parseFile(filePath)
+   parseFile(filePath)
    {
-      return parseCode(fs.readFileSync(filePath, { encode: 'utf8' }).toString(), filePath);
+      return this.parseCode(fs.readFileSync(filePath, { encode: 'utf8' }).toString(), filePath);
    }
 }
