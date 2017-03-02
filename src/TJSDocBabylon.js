@@ -65,9 +65,7 @@ export function onPluginLoad(ev)
 
       // Adds all local Babylon runtime parser plugins.
       { name: 'tjsdoc-ast-util', instance: require(`${dirPath}/parser/BabylonASTUtil.js`) },
-      { name: 'tjsdoc-code-parser', instance: require(`${dirPath}/parser/CodeParser.js`) },
-      { name: 'tjsdoc-comment-parser', instance: require(`${dirPath}/parser/CommentParser.js`) },
-      { name: 'tjsdoc-param-parser', instance: require(`${dirPath}/parser/ParamParser.js`) }
+      { name: 'tjsdoc-code-parser', instance: require(`${dirPath}/parser/CodeParser.js`) }
    ]);
 }
 
