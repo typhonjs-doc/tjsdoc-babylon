@@ -9,8 +9,7 @@
       "alias":
       {
         "tjsdoc/src": "tjsdoc/dist",
-        "tjsdoc-docs-babylon/src": "tjsdoc-docs-babylon/dist",
-        "tjsdoc-runtime-common/src": "tjsdoc-runtime-common/dist"
+        "tjsdoc-docs-babylon/src": "tjsdoc-docs-babylon/dist"
       }
     }],
     "transform-runtime"
@@ -33,8 +32,7 @@
             "tjsdoc-runtime-common": "../tjsdoc-runtime-common/src/",
 
             "tjsdoc/src": "../tjsdoc/src",
-            "tjsdoc-docs-babylon/src": "../tjsdoc-docs-babylon/src",
-            "tjsdoc-runtime-common/src": "../tjsdoc-runtime-common/src"
+            "tjsdoc-docs-babylon/src": "../tjsdoc-docs-babylon/src"
           }
         }],
         "transform-runtime"
