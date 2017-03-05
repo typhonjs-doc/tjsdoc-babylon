@@ -12,10 +12,10 @@
   "scripts": {
     "build": "babel-node ./node_modules/typhonjs-npm-scripts-build-babel/scripts/build.js",
     "eslint": "eslint .",
-    "dev-tjsdoc": "BABEL_ENV=tjsdoc-dev babel-node ./src/TJSDocBabylonCLI.js -c .tjsdocrc",
     "dev-test": "BABEL_ENV=tjsdoc-dev babel-node ./node_modules/typhonjs-npm-scripts-test-mocha/scripts/mocha.js dev_test",
     "dev-test-coverage": "BABEL_ENV=tjsdoc-dev babel-node ./node_modules/typhonjs-npm-scripts-test-mocha/scripts/mocha-istanbul.js dev_test",
     "dev-test-npm": "BABEL_ENV=tjsdoc-dev babel-node ./node_modules/typhonjs-npm-scripts-test-mocha/scripts/mocha.js dev_test_npm",
+    "dev-tjsdoc": "BABEL_ENV=tjsdoc-dev babel-node ./src/TJSDocBabylonCLI.js -c .tjsdocrc-local",
     "prepublish": "babel-node ./node_modules/typhonjs-npm-scripts-publish/scripts/prepublish.js",
     "test": "babel-node ./node_modules/typhonjs-npm-scripts-test-mocha/scripts/mocha.js",
     "test-coverage": "babel-node ./node_modules/typhonjs-npm-scripts-test-mocha/scripts/mocha-istanbul.js"
