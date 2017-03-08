@@ -74,7 +74,7 @@ export default class CodeParser
       }
       catch (err)
       {
-         throw typeof err.pos === 'number' ? this._eventbus.triggerSync('tjsdoc:create:parser:error',
+         throw typeof err.pos === 'number' ? this._eventbus.triggerSync('tjsdoc:error:parser:create',
           { line: err.loc.line, column: err.loc.column, message: err.message, position: err.pos, fileName: filePath }) :
            err;
       }
