@@ -385,7 +385,7 @@ export default class BabylonASTUtil
          const startLine = comment.loc.start.line - 1;
          const endLine = node.loc.start.line;
 
-         const targetLines = this._eventbus.triggerSync('typhonjs:util:file:read:lines', filePath, startLine, endLine);
+         const targetLines = this._eventbus.triggerSync('typhonjs:util:file:lines:read', filePath, startLine, endLine);
 
          return { text: targetLines.join('\n'), startLine, endLine };
       }
@@ -394,7 +394,7 @@ export default class BabylonASTUtil
          const endLine = node.loc.start.line;
          const startLine = endLine - 10;
 
-         const targetLines = this._eventbus.triggerSync('typhonjs:util:file:read:lines', filePath, startLine, endLine);
+         const targetLines = this._eventbus.triggerSync('typhonjs:util:file:lines:read', filePath, startLine, endLine);
 
          return { text: targetLines.join('\n'), startLine, endLine };
       }
