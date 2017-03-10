@@ -205,7 +205,7 @@ export default class BabylonASTUtil
    {
       let path = null;
 
-      this._eventbus.trigger('ast:walker:traverse', ast,
+      this._eventbus.trigger('typhonjs:ast:walker:traverse', ast,
       {
          enterNode: (node) =>
          {
