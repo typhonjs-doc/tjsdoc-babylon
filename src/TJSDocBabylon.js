@@ -133,6 +133,6 @@ const s_DEV_CONFIG = (config) =>
    return Object.assign(
    {
       runtime: `${__dirname}/TJSDocBabylon.js`,
-      publisher: path.resolve(__dirname, '../../tjsdoc-publisher-static-html/src/publish.js')
+      publisher: path.resolve(__dirname, '../../tjsdoc-publisher-static-html/src/Publisher.js')
    }, config);
 };
