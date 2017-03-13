@@ -21,7 +21,6 @@
     "test-coverage": "babel-node ./node_modules/typhonjs-npm-scripts-test-mocha/scripts/mocha-istanbul.js"
   },
   "dependencies": {
-    "babel-generator": "^6.0.0",
     "babel-runtime": "^6.0.0",
     "babylon": "^6.0.0",
     "tjsdoc-plugin-external-ecmascript": "<=0.1.0"

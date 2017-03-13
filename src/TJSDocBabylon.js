@@ -1,8 +1,7 @@
-import path             from 'path';
-import TJSDoc           from 'tjsdoc';
+import path       from 'path';
+import TJSDoc     from 'tjsdoc';
 
-import BabylonASTUtil   from './parser/BabylonASTUtil.js';
-import CodeParser       from './parser/CodeParser.js';
+import CodeParser from './parser/CodeParser.js';
 
 /**
  * Provides an overridden version of TJSDoc with a default runtime and publisher assigned to `tjsdoc-babylon` &
@@ -68,7 +67,6 @@ export function onPluginLoad(ev)
       },
 
       // Adds all local Babylon runtime parser plugins.
-      { name: 'tjsdoc-ast-util', instance: new BabylonASTUtil() },
       { name: 'tjsdoc-code-parser', instance: new CodeParser() }
    ]);
 }
@@ -80,9 +78,7 @@ export function onPluginLoad(ev)
  */
 export function onRegenerate(ev)
 {
-   const eventbus = ev.eventbus;
-
-   eventbus.trigger('plugins:remove', 'tjsdoc-plugin-external-ecmascript');
+   ev.eventbus.trigger('plugins:remove', 'tjsdoc-plugin-external-ecmascript');
 }
 
 
