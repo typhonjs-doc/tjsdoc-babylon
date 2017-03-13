@@ -486,43 +486,43 @@ export default class BabylonASTUtil
        */
       this._eventbus = ev.eventbus;
 
-      this._eventbus.on('tjsdoc:ast:create:variable:declaration:new:expression',
-       this.createVariableDeclarationAndNewExpressionNode, this);
+      this._eventbus.on('tjsdoc:system:ast:class:declaration:create', this.findClassDeclarationNode, this);
 
-      this._eventbus.on('tjsdoc:ast:create:class:declaration', this.findClassDeclarationNode, this);
+      this._eventbus.on('tjsdoc:system:ast:class:declaration:find', this.findClassDeclarationNode, this);
 
-      this._eventbus.on('tjsdoc:ast:find:class:declaration', this.findClassDeclarationNode, this);
-
-      this._eventbus.on('tjsdoc:ast:find:decorators', this.findDecorators, this);
-
-      this._eventbus.on('tjsdoc:ast:find:function:declaration', this.findFunctionDeclarationNode, this);
-
-      this._eventbus.on('tjsdoc:ast:find:import:style', this.findImportStyle, this);
-
-      this._eventbus.on('tjsdoc:ast:find:line:number:start', this.findLineNumberStart, this);
-
-      this._eventbus.on('tjsdoc:ast:find:parent:export', this.findParentExport, this);
-
-      this._eventbus.on('tjsdoc:ast:find:path:import:declaration', this.findPathInImportDeclaration, this);
-
-      this._eventbus.on('tjsdoc:ast:find:variable:declaration', this.findVariableDeclarationNode, this);
-
-      this._eventbus.on('tjsdoc:ast:find:variable:declaration:new:expression',
-       this.findVariableDeclarationAndNewExpressionNode, this);
-
-      this._eventbus.on('tjsdoc:ast:flatten:member:expression', this.flattenMemberExpression, this);
-
-      this._eventbus.on('tjsdoc:ast:get:code:comment:and:first:line:from:node',
+      this._eventbus.on('tjsdoc:system:ast:code:comment:first:line:from:node:get',
        this.getCodeCommentAndFirstLineFromNode, this);
 
-      this._eventbus.on('tjsdoc:ast:get:method:params:from:node', this.getMethodParamsFromNode, this);
+      this._eventbus.on('tjsdoc:system:ast:decorators:find', this.findDecorators, this);
 
-      this._eventbus.on('tjsdoc:ast:get:file:comment:and:first:line:from:node',
+      this._eventbus.on('tjsdoc:system:ast:file:comment:first:line:from:node:get',
        this.getFileCommentAndFirstLineFromNode, this);
 
-      this._eventbus.on('tjsdoc:ast:node:sanitize', this.sanitize, this);
+      this._eventbus.on('tjsdoc:system:ast:function:declaration:find', this.findFunctionDeclarationNode, this);
 
-      this._eventbus.on('tjsdoc:ast:node:sanitize:children', this.sanitizeChildren, this);
+      this._eventbus.on('tjsdoc:system:ast:import:style:find', this.findImportStyle, this);
+
+      this._eventbus.on('tjsdoc:system:ast:line:number:start:find', this.findLineNumberStart, this);
+
+      this._eventbus.on('tjsdoc:system:ast:member:expression:flatten', this.flattenMemberExpression, this);
+
+      this._eventbus.on('tjsdoc:system:ast:method:params:from:node:get', this.getMethodParamsFromNode, this);
+
+      this._eventbus.on('tjsdoc:system:ast:node:sanitize', this.sanitize, this);
+
+      this._eventbus.on('tjsdoc:system:ast:node:sanitize:children', this.sanitizeChildren, this);
+
+      this._eventbus.on('tjsdoc:system:ast:parent:export:find', this.findParentExport, this);
+
+      this._eventbus.on('tjsdoc:system:ast:path:import:declaration:find', this.findPathInImportDeclaration, this);
+
+      this._eventbus.on('tjsdoc:system:ast:variable:declaration:find', this.findVariableDeclarationNode, this);
+
+      this._eventbus.on('tjsdoc:system:ast:variable:declaration:new:expression:create',
+       this.createVariableDeclarationAndNewExpressionNode, this);
+
+      this._eventbus.on('tjsdoc:system:ast:variable:declaration:new:expression:find',
+       this.findVariableDeclarationAndNewExpressionNode, this);
    }
 
    /**
