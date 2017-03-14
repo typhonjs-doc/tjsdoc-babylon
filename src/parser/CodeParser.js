@@ -28,8 +28,8 @@ export default class CodeParser
        */
       this._eventbus = ev.eventbus;
 
-      this._eventbus.on('tjsdoc:parse:code', this.parseCode, this);
-      this._eventbus.on('tjsdoc:parse:file', this.parseFile, this);
+      this._eventbus.on('tjsdoc:system:parser:code:source:parse', this.parseSource, this);
+      this._eventbus.on('tjsdoc:system:parser:code:file:parse', this.parseFile, this);
    }
 
    /**
@@ -41,7 +41,7 @@ export default class CodeParser
     *
     * @returns {object} Parsed AST
     */
-   parseCode(code, filePath = void 0)
+   parseSource(code, filePath = void 0)
    {
       let ast;
 
@@ -91,6 +91,6 @@ export default class CodeParser
     */
    parseFile(filePath)
    {
-      return this.parseCode(fs.readFileSync(filePath, { encode: 'utf8' }).toString(), filePath);
+      return this.parseSource(fs.readFileSync(filePath, { encode: 'utf8' }).toString(), filePath);
    }
 }
