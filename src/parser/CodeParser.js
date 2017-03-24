@@ -47,7 +47,8 @@ export default class CodeParser
 
       try
       {
-         code = this._eventbus.triggerSync('plugins:invoke:sync:event', 'onHandleCode', { code }, { filePath }).code;
+         code = this._eventbus.triggerSync('plugins:invoke:sync:event',
+          'onHandleCode', void 0, { code, filePath }).code;
 
          if (code.charAt(0) === '#') { code = code.replace(/^#!/, '//'); }
 
@@ -69,8 +70,8 @@ export default class CodeParser
 
          ast = parser(code);
 
-         ast = this._eventbus.triggerSync('plugins:invoke:sync:event', 'onHandleAST', { ast },
-          { filePath, code }).ast;
+         ast = this._eventbus.triggerSync('plugins:invoke:sync:event',
+          'onHandleAST', void 0, { ast, code, filePath }).ast;
       }
       catch (err)
       {
