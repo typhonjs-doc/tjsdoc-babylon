@@ -72,22 +72,11 @@ export function onPluginLoad(ev)
 }
 
 /**
- * Handle any removal of data plugins for regeneration.
- *
- * @param {PluginEvent} ev - The plugin event.
- */
-export function onRegenerate(ev)
-{
-   ev.eventbus.trigger('plugins:remove', 'tjsdoc-plugin-external-ecmascript');
-}
-
-
-/**
  * Handles adding built-in external references for ECMAScript.
  *
  * @param {PluginEvent} ev - The plugin event.
  */
-export function onStart(ev)
+export function onPreGenerate(ev)
 {
    // Load built-in virtual plugins for external definitions.
    if (ev.data.config.builtinVirtual)
