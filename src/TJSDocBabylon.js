@@ -79,7 +79,7 @@ export function onPluginLoad(ev)
 export function onPreGenerate(ev)
 {
    // Load built-in virtual plugins for external definitions.
-   if (ev.data.config.builtinVirtual)
+   if (ev.data.mainConfig.builtinVirtual)
    {
       ev.eventbus.trigger('plugins:add',
        { name: 'tjsdoc-plugin-external-ecmascript', instance: require('tjsdoc-plugin-external-ecmascript') });
