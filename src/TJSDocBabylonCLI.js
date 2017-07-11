@@ -12,7 +12,7 @@ export default class TJSDocBabylonCLI extends TJSDocCLI
    /**
     * @override
     */
-   exec(runtime) { super.exec(TJSDocBabylon); } // eslint-disable-line no-unused-vars
+   async exec(runtime) { await super.exec(TJSDocBabylon); } // eslint-disable-line no-unused-vars
 }
 
 // If this file is directory executed, work as CLI. However in WebStorm when profiling for heap dumps the target source

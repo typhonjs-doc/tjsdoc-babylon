@@ -21,9 +21,9 @@ export default class TJSDocBabylon extends TJSDoc
     *
     * @param {TJSDocConfig}   config - TJSDoc config.
     */
-   static generate(config)
+   static async generate(config)
    {
-      super.generate(process.env.TJSDOC_ENV === 'development' ? s_DEV_CONFIG(config) : s_DEFAULT_CONFIG(config));
+      await super.generate(process.env.TJSDOC_ENV === 'development' ? s_DEV_CONFIG(config) : s_DEFAULT_CONFIG(config));
    }
 }
 
