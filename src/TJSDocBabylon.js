@@ -46,7 +46,7 @@ export async function onPluginLoad(ev)
    });
 
    // Adds all Babylon runtime plugins
-   await eventbus.triggerAsync('plugins:add:all:async', [
+   await eventbus.triggerAsync('plugins:async:add:all', [
       // Adds Babylon doc generation and DocFactory event bindings.
       { name: 'tjsdoc-docs-babylon', instance: require('tjsdoc-docs-babylon'), options: { logAutoFilter: false } },
 
@@ -81,7 +81,7 @@ export async function onRuntimePreGenerateAsync(ev)
    // Load built-in virtual plugins for external definitions.
    if (ev.data.mainConfig.builtinVirtual)
    {
-      await ev.eventbus.triggerAsync('plugins:add:async',
+      await ev.eventbus.triggerAsync('plugins:async:add',
        { name: 'tjsdoc-plugin-external-ecmascript', instance: require('tjsdoc-plugin-external-ecmascript') });
    }
 }

@@ -47,7 +47,7 @@ export default class CodeParser
 
       try
       {
-         code = this._eventbus.triggerSync('plugins:invoke:sync:event',
+         code = this._eventbus.triggerSync('plugins:sync:invoke:event',
           'onHandleCode', void 0, { code, filePath }).code;
 
          if (code.charAt(0) === '#') { code = code.replace(/^#!/, '//'); }
@@ -65,12 +65,12 @@ export default class CodeParser
             return babylon.parse(code, parserOptions);
          };
 
-         parser = this._eventbus.triggerSync('plugins:invoke:sync:event', 'onHandleCodeParser', void 0,
+         parser = this._eventbus.triggerSync('plugins:sync:invoke:event', 'onHandleCodeParser', void 0,
           { parser, parserOptions, filePath, code }).parser;
 
          ast = parser(code);
 
-         ast = this._eventbus.triggerSync('plugins:invoke:sync:event',
+         ast = this._eventbus.triggerSync('plugins:sync:invoke:event',
           'onHandleAST', void 0, { ast, code, filePath }).ast;
       }
       catch (err)
