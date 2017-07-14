@@ -34,7 +34,7 @@ export default class TJSDocBabylon extends TJSDoc
  *
  * @ignore
  */
-export function onPluginLoad(ev)
+export async function onPluginLoad(ev)
 {
    const eventbus = ev.eventbus;
 
@@ -46,7 +46,7 @@ export function onPluginLoad(ev)
    });
 
    // Adds all Babylon runtime plugins
-   eventbus.trigger('plugins:add:all', [
+   await eventbus.triggerAsync('plugins:add:all:async', [
       // Adds Babylon doc generation and DocFactory event bindings.
       { name: 'tjsdoc-docs-babylon', instance: require('tjsdoc-docs-babylon'), options: { logAutoFilter: false } },
 
@@ -76,12 +76,12 @@ export function onPluginLoad(ev)
  *
  * @param {PluginEvent} ev - The plugin event.
  */
-export function onPreGenerate(ev)
+export async function onRuntimePreGenerateAsync(ev)
 {
    // Load built-in virtual plugins for external definitions.
    if (ev.data.mainConfig.builtinVirtual)
    {
-      ev.eventbus.trigger('plugins:add',
+      await ev.eventbus.triggerAsync('plugins:add:async',
        { name: 'tjsdoc-plugin-external-ecmascript', instance: require('tjsdoc-plugin-external-ecmascript') });
    }
 }
